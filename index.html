@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Mercado Livre</title>
+  <meta name="theme-color" content="#111111" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icons/icon-192.png" type="image/png" />
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <header class="top">
+    <img src="./icons/icon-192.png" alt="Logo" />
+    <h1>Mini Mercado Livre</h1>
+  </header>
+
+  <main class="wrap">
+    <p>Modelo simples com PWA ativado. Edite este HTML para colocar seu conteúdo.</p>
+    <p>Publicação rápida: GitHub Pages.</p>
+    <button id="installBtn" class="btn">Instalar app</button>
+  </main>
+
+  <footer class="foot">
+    <small>© 2025 — PWA de exemplo</small>
+  </footer>
+
+  <script>
+    // Registro do Service Worker
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js");
+      });
+    }
+    // Botão de instalação (Android/desktop)
+    let deferredPrompt = null;
+    const installBtn = document.getElementById("installBtn");
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = "inline-block";
+    });
+    installBtn.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installBtn.style.display = "none";
+    });
+  </script>
+</body>
+</html>
